@@ -72,9 +72,8 @@ const MobileTapReporter = require('./mobileTapReporter');
                 ]
             );
 
-            this.defaultScripts.unshift('libs/chai.js');
-            this.defaultScripts.unshift('libs/mocha.js');
-            this.defaultScripts.unshift('libs/underscore.js');
+            this.defaultScripts.unshift('chai.js');
+            this.defaultScripts.unshift('mocha.js');
 
             if (isCordova) {
                 this.defaultScripts.unshift('../cordova.js');
@@ -82,7 +81,7 @@ const MobileTapReporter = require('./mobileTapReporter');
                 //     'everlive.js';
             }
 
-            this.defaultLinks = ['libs/mocha.css'];
+            this.defaultLinks = ['mocha.css'];
 
             var scripts = null;
             var css = null;
@@ -91,10 +90,12 @@ const MobileTapReporter = require('./mobileTapReporter');
             [].forEach.call(document.querySelectorAll('script'), function(
                 script
             ) {
-                if (script.src.indexOf('TestRunner') !== -1) {
+                if (script.src.indexOf('testRunner') !== -1) {
                     var src = script.src;
                     self.path = src.substr(0, src.lastIndexOf('/') + 1);
-                    scripts = script.dataset.js && script.dataset.js.split(',');
+                    self.libsPath = self.path.replace('bundles', 'test-libs');
+                    scripts = script.dataset.js && script.dataset.js.split(',');       
+                    scripts.unshift('../../dist/kinvey-html5-sdk.min.js');
                     css = script.dataset.css && script.dataset.css.split(',');
                 }
             });
@@ -145,7 +146,7 @@ const MobileTapReporter = require('./mobileTapReporter');
         } else {
             var script = document.createElement('script');
             script.type = 'text/javascript';
-            var prefix = relative ? '' : this.path;
+            var prefix = relative ? '' : this.libsPath;
             script.src = prefix + src;
             script.async = false;
 
@@ -162,12 +163,13 @@ const MobileTapReporter = require('./mobileTapReporter');
 
         link.type = 'text/css';
         link.rel = 'stylesheet';
-        link.href = this.path + href;
+        link.href = this.libsPath + href;
 
         document.head.appendChild(link);
     };
 
     TestRunner.prototype.run = function run(tests, testFunc, context) {
+        mocha.setup('bdd');
         if (typeof tests === 'function') {
             //run a test without specific test arguments
             var testFunction = tests;
@@ -188,6 +190,8 @@ const MobileTapReporter = require('./mobileTapReporter');
             });
         }
     };
+	
+	var runner = root.runner = new TestRunner();
 
     TestRunner.prototype.runAllTests = function() {
         if (this.loaded) {
@@ -235,7 +239,7 @@ const MobileTapReporter = require('./mobileTapReporter');
             }, 1000);
         });
     } else if (!isNativeScript && !isNodejs && !isReactNative) {
-        root.addEventListener('load', function() {
+        window.addEventListener('load', function() {
             setTimeout(function() {
                 runner.runAllTests();
             }, 1000);
