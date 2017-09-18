@@ -3,13 +3,13 @@
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
+    "license": "Apache-2.0",
+    "author": "Kinvey, Inc.",
     "scripts": {
         "postinstall": "npm run build-deps",
         "test": "echo \"Error: no test specified\" && exit 1",
         "build-deps": "parallel-webpack --config=injectables/webpack.config.js"
     },
-    "author": "",
-    "license": "ISC",
     "dependencies": {
         "cross-spawn": "^5.1.0",
         "fs-extra": "^4.0.1",
