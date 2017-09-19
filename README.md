@@ -1,5 +1,9 @@
 # Universal Javascript Test Runner
 
+## Installation
+
+`$ npm install universal-runner`
+
 ## Description
 
 The goal of the runner is to provide an easy way to automate the testing in different javascript environments. Currently supported are:
