@@ -42,7 +42,7 @@ const {
     conditionals: {
         when
     }
-} = require('universal-js-runner');
+} = require('universal-runner');
 
 const customTask = ['customTask', () => console.log('custom')];
 
