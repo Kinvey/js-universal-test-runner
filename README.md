@@ -114,7 +114,7 @@ const {
         when,
         ifThenElse
     }
-} = require('universal-js-runner');
+} = require('universal-runner');
 ```
 
 ### logServer
