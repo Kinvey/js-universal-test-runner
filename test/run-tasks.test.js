@@ -3,7 +3,9 @@ const assert = require('assert');
 const path = require('path');
 const fs = require('fs');
 
-const testFilesDir = path.join(__dirname, 'test-files');
+
+const testFilesDir = path.join(__dirname, 'temp');
+const fileToCopyName = 'test_file';
 
 const {
     Runner,
@@ -65,7 +67,7 @@ describe('Run Tasks', function() {
         }).then(done, done);
     })
 
-    it('runCommand', function(done) {
+    it('should execute runCommand task', function(done) {
         const filename = `${new Date().valueOf()}_test`;
         const runner = new Runner({
             pipeline: [
@@ -77,6 +79,32 @@ describe('Run Tasks', function() {
                     'verify command execution',
                     () => {
                         assert(fs.existsSync(path.join(testFilesDir, filename)));
+                    }
+                ]
+            ]
+        });
+
+        runner.run().then(() => {}).then(done, done);
+    })
+
+    it('should execute copy and remove tasks', function(done) {
+        const runner = new Runner({
+            pipeline: [
+                copy(
+                    path.resolve(__dirname, fileToCopyName),
+                    path.resolve(testFilesDir, fileToCopyName)
+                ), [
+                    'verify copy command execution',
+                    () => {
+                        assert(fs.existsSync(path.join(testFilesDir, fileToCopyName)));
+                    }
+                ],
+                remove(
+                    path.resolve(testFilesDir, fileToCopyName)
+                ), [
+                    'verify remove command execution',
+                    () => {
+                        assert(!fs.existsSync(path.join(testFilesDir, fileToCopyName)));
                     }
                 ]
             ]
