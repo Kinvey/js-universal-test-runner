@@ -1,32 +1,41 @@
 const sinon = require('sinon')
 const assert = require('assert');
+const path = require('path');
+const fs = require('fs');
+
+const testFilesDir = path.join(__dirname, 'test-files');
 
 const {
     Runner,
     tasks: {
         logServer,
         copy,
-        runCommand
+        remove,
+        copyTestRunner,
+        runCommand,
+        installPackages,
+        processTemplateFile
     },
     conditionals: {
-        when
+        when,
+        ifThenElse
     }
 } = require('../');
 
 const tasks = {
-    customTask1: () => {},
-    customTask2: (arg) => {},
-    customTask3: (arg1, arg2) => {},
-    customTask4: (arg) => {}
+    customTaskNoArgs: () => {},
+    customTaskOneArg: (arg) => {},
+    customTaskTwoArgs: (arg1, arg2) => {},
+    customTask: (arg) => {}
 };
 
 describe('Run Tasks', function() {
 
     it('should run a custom task with runner as argument', function(done) {
-        const customTaskSpy = sinon.spy(tasks, 'customTask1');
+        const customTaskSpy = sinon.spy(tasks, 'customTaskNoArgs');
         const runner = new Runner({
             pipeline: [
-                tasks.customTask1
+                tasks.customTaskNoArgs
             ]
         });
 
@@ -37,22 +46,42 @@ describe('Run Tasks', function() {
     })
 
     it('should run an array of tasks with the correct arguments', function(done) {
-        const customTaskSpy2 = sinon.spy(tasks, 'customTask2');
-        const customTaskSpy3 = sinon.spy(tasks, 'customTask3');
-        const customTaskSpy4 = sinon.spy(tasks, 'customTask4');
+        const customTaskSpy1 = sinon.spy(tasks, 'customTaskOneArg');
+        const customTaskSpy2 = sinon.spy(tasks, 'customTaskTwoArgs');
+        const customTaskSpy3 = sinon.spy(tasks, 'customTask');
         const runner = new Runner({
             pipeline: [
-                ['customTask2', tasks.customTask2, 5],
-                ['customTask3', tasks.customTask3, 'test', 10],
-                ['customTask4', tasks.customTask4, tasks.customTask1]
+                ['customTaskOneArg', tasks.customTaskOneArg, 5],
+                ['customTaskTwoArgs', tasks.customTaskTwoArgs, 'test', 10],
+                ['customTask', tasks.customTask, tasks.customTaskNoArgs]
             ]
         });
 
         runner.run().then(() => {
-            assert(customTaskSpy2.withArgs(5, runner).calledOnce);
-            assert(customTaskSpy3.withArgs('test', 10, runner).calledOnce);
-            assert(customTaskSpy4.withArgs(tasks.customTask1, runner).calledOnce);
-            sinon.assert.callOrder(customTaskSpy2, customTaskSpy3, customTaskSpy4)
+            assert(customTaskSpy1.withArgs(5, runner).calledOnce);
+            assert(customTaskSpy2.withArgs('test', 10, runner).calledOnce);
+            assert(customTaskSpy3.withArgs(tasks.customTaskNoArgs, runner).calledOnce);
+            sinon.assert.callOrder(customTaskSpy1, customTaskSpy2, customTaskSpy3)
         }).then(done, done);
+    })
+
+    it('runCommand', function(done) {
+        const filename = `${new Date().valueOf()}_test`;
+        const runner = new Runner({
+            pipeline: [
+                runCommand({
+                    command: 'touch',
+                    args: [filename],
+                    cwd: testFilesDir
+                }), [
+                    'verify command execution',
+                    () => {
+                        assert(fs.existsSync(path.join(testFilesDir, filename)));
+                    }
+                ]
+            ]
+        });
+
+        runner.run().then(() => {}).then(done, done);
     })
 })
