@@ -43,6 +43,7 @@ module.exports = {
             `if ${condition} then ${Runner.parseTask(thenTask)
                 .name} else ${Runner.parseTask(elseTask).name}`,
             ifThenElse,
+            condition,
             thenTask,
             elseTask
         ]

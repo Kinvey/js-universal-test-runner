@@ -210,7 +210,7 @@ ifThenElse(() => new Promise(resolve => {
     }),
     () => console.log('5 seconds passed'), 
     () => console.log('5 seconds didn\'t pass for some reason')
-});
+);
 ```
 
 ## Contributing
