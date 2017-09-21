@@ -68,7 +68,7 @@ describe('Run Tasks', function() {
         }).then(done, done);
     })
 
-    it('should execute runCommand task', function(done) {
+    it('should run runCommand task', function(done) {
         const filename = `${new Date().valueOf()}_test`;
         const runner = new Runner({
             pipeline: [
@@ -88,7 +88,7 @@ describe('Run Tasks', function() {
         runner.run().then(() => {}).then(done, done);
     })
 
-    it('should execute copy and remove tasks', function(done) {
+    it('should run copy and remove tasks', function(done) {
         const runner = new Runner({
             pipeline: [
                 copy(
@@ -114,7 +114,7 @@ describe('Run Tasks', function() {
         runner.run().then(() => {}).then(done, done);
     })
 
-    it('should execute copyTestRunner task', function(done) {
+    it('should run copyTestRunner task', function(done) {
         const runner = new Runner({
             pipeline: [
                 copyTestRunner(
@@ -129,5 +129,32 @@ describe('Run Tasks', function() {
         });
 
         runner.run().then(() => {}).then(done, done);
+    })
+
+    it('should run a conditional when task if the condition is true', function(done) {
+        const customTaskSpy = sinon.spy(tasks, 'customTaskNoArgs');
+        const runner = new Runner({
+            pipeline: [
+                when(() => true, tasks.customTaskNoArgs)
+            ]
+        });
+
+        runner.run().then(() => {
+            assert(customTaskSpy.calledOnce);
+            assert(customTaskSpy.withArgs(runner).calledOnce);
+        }).then(done, done);
+    })
+
+    it.only('should not run a conditional when task if the condition is false', function(done) {
+        const customTaskSpy = sinon.spy(tasks, 'customTaskNoArgs');
+        const runner = new Runner({
+            pipeline: [
+                when(() => false, tasks.customTaskNoArgs)
+            ]
+        });
+
+        runner.run().then(() => {
+            assert(customTaskSpy.notCalled);
+        }).then(done, done);
     })
 })
