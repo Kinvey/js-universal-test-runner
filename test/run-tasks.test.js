@@ -6,6 +6,7 @@ const fs = require('fs');
 
 const testFilesDir = path.join(__dirname, 'temp');
 const fileToCopyName = 'test_file';
+const testRunnerBundleFileName = 'testRunner.bundle.js'
 
 const {
     Runner,
@@ -76,7 +77,7 @@ describe('Run Tasks', function() {
                     args: [filename],
                     cwd: testFilesDir
                 }), [
-                    'verify command execution',
+                    'verify task execution',
                     () => {
                         assert(fs.existsSync(path.join(testFilesDir, filename)));
                     }
@@ -94,7 +95,7 @@ describe('Run Tasks', function() {
                     path.resolve(__dirname, fileToCopyName),
                     path.resolve(testFilesDir, fileToCopyName)
                 ), [
-                    'verify copy command execution',
+                    'verify copy task execution',
                     () => {
                         assert(fs.existsSync(path.join(testFilesDir, fileToCopyName)));
                     }
@@ -102,9 +103,26 @@ describe('Run Tasks', function() {
                 remove(
                     path.resolve(testFilesDir, fileToCopyName)
                 ), [
-                    'verify remove command execution',
+                    'verify remove task execution',
                     () => {
                         assert(!fs.existsSync(path.join(testFilesDir, fileToCopyName)));
+                    }
+                ]
+            ]
+        });
+
+        runner.run().then(() => {}).then(done, done);
+    })
+
+    it('should execute copyTestRunner task', function(done) {
+        const runner = new Runner({
+            pipeline: [
+                copyTestRunner(
+                    path.resolve(testFilesDir)
+                ), [
+                    'verify copyTestRunner task execution',
+                    () => {
+                        assert(fs.existsSync(path.join(testFilesDir, testRunnerBundleFileName)));
                     }
                 ]
             ]
