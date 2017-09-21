@@ -32,7 +32,32 @@ const tasks = {
     customTask: (arg) => {}
 };
 
+removeDirectory = (dirPath, removeSelf) => {
+    const files = fs.readdirSync(dirPath);
+    if (files.length > 0) {
+        files.forEach((file) => {
+            const filePath = path.join(dirPath, file);
+            if (fs.statSync(filePath).isFile()) {
+                fs.unlinkSync(filePath);
+            }
+        })
+    }
+    if (removeSelf) {
+        fs.rmdirSync(dirPath);
+    }
+};
+
 describe('Run Tasks', function() {
+
+    before((done) => {
+        removeDirectory(testFilesDir)
+        done();
+    });
+
+    after((done) => {
+        removeDirectory(testFilesDir)
+        done();
+    });
 
     afterEach((done) => {
         Object.keys(tasks).forEach((key) => {
