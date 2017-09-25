@@ -49,9 +49,31 @@ removeDirectory = (dirPath, removeSelf) => {
     }
 };
 
-describe('Run Tasks', function() {
-
+it('npm run build-deps should generate the bundle files', function(done) {
     this.timeout(10000);
+
+    removeDirectory(bundleDirectory);
+    assert(!fs.existsSync(path.join(bundleDirectory, testRunnerBundleFileName)));
+    const runner = new Runner({
+        pipeline: [
+            runCommand({
+                command: 'npm',
+                args: ['run', 'build-deps'],
+                cwd: testFilesDir
+            }), [
+                'verify the bundle files are generated',
+                () => {
+                    assert(fs.existsSync(path.join(bundleDirectory, testRunnerBundleFileName)));
+                    assert(fs.existsSync(path.join(bundleDirectory, testRunnerBundleMapFileName)));
+                }
+            ]
+        ]
+    });
+
+    runner.run().then(() => {}).then(done, done);
+})
+
+describe('Run Tasks', function() {
 
     before((done) => {
         removeDirectory(testFilesDir)
@@ -230,28 +252,5 @@ describe('Run Tasks', function() {
             assert(customTaskSpy1.notCalled);
             assert(customTaskSpy2.calledOnce);
         }).then(done, done);
-    })
-
-    it('npm run build-deps should generate the bundle files', function(done) {
-
-        removeDirectory(bundleDirectory);
-        assert(!fs.existsSync(path.join(bundleDirectory, testRunnerBundleFileName)));
-        const runner = new Runner({
-            pipeline: [
-                runCommand({
-                    command: 'npm',
-                    args: ['run', 'build-deps'],
-                    cwd: testFilesDir
-                }), [
-                    'verify the bundle files are generated',
-                    () => {
-                        assert(fs.existsSync(path.join(bundleDirectory, testRunnerBundleFileName)));
-                        assert(fs.existsSync(path.join(bundleDirectory, testRunnerBundleMapFileName)));
-                    }
-                ]
-            ]
-        });
-
-        runner.run().then(() => {}).then(done, done);
     })
 })
