@@ -1,3 +1,5 @@
+'use strict'
+
 const sinon = require('sinon')
 const assert = require('assert');
 const path = require('path');
@@ -34,7 +36,7 @@ const tasks = {
     customTask: (arg) => {}
 };
 
-removeDirectory = (dirPath, removeSelf) => {
+const removeFiles = (dirPath, removeSelf) => {
     const files = fs.readdirSync(dirPath);
     if (files.length > 0) {
         files.forEach((file) => {
@@ -51,7 +53,7 @@ removeDirectory = (dirPath, removeSelf) => {
 
 it('npm run build-deps should generate the bundle files', (done) => {
 
-    removeDirectory(bundleDirectory);
+    removeFiles(bundleDirectory);
     assert(!fs.existsSync(path.join(bundleDirectory, testRunnerBundleFileName)));
     const runner = new Runner({
         pipeline: [
@@ -75,12 +77,12 @@ it('npm run build-deps should generate the bundle files', (done) => {
 describe('Run Tasks', () => {
 
     before((done) => {
-        removeDirectory(testFilesDir)
+        removeFiles(testFilesDir)
         done();
     });
 
     after((done) => {
-        removeDirectory(testFilesDir)
+        removeFiles(testFilesDir)
         done();
     });
 
