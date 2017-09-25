@@ -49,7 +49,7 @@ removeDirectory = (dirPath, removeSelf) => {
     }
 };
 
-it('npm run build-deps should generate the bundle files', function (done) {
+it('npm run build-deps should generate the bundle files', (done) => {
 
     removeDirectory(bundleDirectory);
     assert(!fs.existsSync(path.join(bundleDirectory, testRunnerBundleFileName)));
@@ -187,6 +187,35 @@ describe('Run Tasks', () => {
         });
 
         runner.run().then(() => {}).then(done, done);
+    })
+
+    it('should run processTemplateFile task', (done) => {
+        let resultFilePath = path.join(testFilesDir, 'result.html');
+        const value = 'from_template';
+        const runner = new Runner({
+            pipeline: [
+                processTemplateFile(
+                    path.join(__dirname, 'template.hbs'), {
+                        title: value
+                    },
+                    resultFilePath
+                ), [
+                    'verify task execution',
+                    () => {
+                        fs.readFile(resultFilePath, (err, data) => {
+                            if (err) {
+                                done(err);
+                            } else {
+                                assert(data.indexOf(value) >= 0);
+                                done();
+                            }
+                        });
+                    }
+                ]
+            ]
+        });
+
+        runner.run()
     })
 
     it('should run a conditional when task if the condition is true', (done) => {
