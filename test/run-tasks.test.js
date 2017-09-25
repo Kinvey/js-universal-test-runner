@@ -197,6 +197,25 @@ describe('Run Tasks', () => {
         runner.run().catch(done);
     })
 
+    it('should run logServer task', (done) => {
+        let logServerPort;
+        const runner = new Runner({
+            pipeline: [
+                logServer(),
+                [
+                    'verify logServer task execution',
+                    () => {
+                        assert(logServerPort !== undefined);
+                        done();
+                    }
+                ]
+            ]
+        });
+
+        runner.on('log.start', port => (logServerPort = port));
+        runner.run().catch(done);
+    })
+
     it('should run processTemplateFile task', (done) => {
         let resultFilePath = path.join(testFilesDir, 'result.html');
         const value = 'from_template';
