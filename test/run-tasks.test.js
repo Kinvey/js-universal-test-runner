@@ -49,7 +49,7 @@ removeDirectory = (dirPath, removeSelf) => {
     }
 };
 
-it('npm run build-deps should generate the bundle files', function(done) {
+it('npm run build-deps should generate the bundle files', function (done) {
     this.timeout(10000);
 
     removeDirectory(bundleDirectory);
@@ -58,8 +58,7 @@ it('npm run build-deps should generate the bundle files', function(done) {
         pipeline: [
             runCommand({
                 command: 'npm',
-                args: ['run', 'build-deps'],
-                cwd: testFilesDir
+                args: ['run', 'build-deps']
             }), [
                 'verify the bundle files are generated',
                 () => {
@@ -73,7 +72,7 @@ it('npm run build-deps should generate the bundle files', function(done) {
     runner.run().then(() => {}).then(done, done);
 })
 
-describe('Run Tasks', function() {
+describe('Run Tasks', () => {
 
     before((done) => {
         removeDirectory(testFilesDir)
@@ -94,7 +93,7 @@ describe('Run Tasks', function() {
         done();
     });
 
-    it('should run a custom task with runner as argument', function(done) {
+    it('should run a custom task with runner as argument', (done) => {
         const customTaskSpy = sinon.spy(tasks, 'customTaskNoArgs');
         const runner = new Runner({
             pipeline: [
@@ -108,7 +107,7 @@ describe('Run Tasks', function() {
         }).then(done, done);
     })
 
-    it('should run an array of tasks with the correct arguments', function(done) {
+    it('should run an array of tasks with the correct arguments', (done) => {
         const customTaskSpy1 = sinon.spy(tasks, 'customTaskOneArg');
         const customTaskSpy2 = sinon.spy(tasks, 'customTaskTwoArgs');
         const customTaskSpy3 = sinon.spy(tasks, 'customTask');
@@ -128,7 +127,7 @@ describe('Run Tasks', function() {
         }).then(done, done);
     })
 
-    it('should run runCommand task', function(done) {
+    it('should run runCommand task', (done) => {
         const filename = `${new Date().valueOf()}_test`;
         const runner = new Runner({
             pipeline: [
@@ -148,7 +147,7 @@ describe('Run Tasks', function() {
         runner.run().then(() => {}).then(done, done);
     })
 
-    it('should run copy and remove tasks', function(done) {
+    it('should run copy and remove tasks', (done) => {
         const runner = new Runner({
             pipeline: [
                 copy(
@@ -174,7 +173,7 @@ describe('Run Tasks', function() {
         runner.run().then(() => {}).then(done, done);
     })
 
-    it('should run copyTestRunner task', function(done) {
+    it('should run copyTestRunner task', (done) => {
         const runner = new Runner({
             pipeline: [
                 copyTestRunner(
@@ -191,7 +190,7 @@ describe('Run Tasks', function() {
         runner.run().then(() => {}).then(done, done);
     })
 
-    it('should run a conditional when task if the condition is true', function(done) {
+    it('should run a conditional when task if the condition is true', (done) => {
         const customTaskSpy = sinon.spy(tasks, 'customTaskNoArgs');
         const runner = new Runner({
             pipeline: [
@@ -205,7 +204,7 @@ describe('Run Tasks', function() {
         }).then(done, done);
     })
 
-    it('should not run a conditional when task if the condition is false', function(done) {
+    it('should not run a conditional when task if the condition is false', (done) => {
         const customTaskSpy = sinon.spy(tasks, 'customTaskNoArgs');
         const runner = new Runner({
             pipeline: [
@@ -218,7 +217,7 @@ describe('Run Tasks', function() {
         }).then(done, done);
     })
 
-    it('should run a conditional ifThenElse task with condition = true', function(done) {
+    it('should run a conditional ifThenElse task with condition = true', (done) => {
         const customTaskSpy1 = sinon.spy(tasks, 'customTaskNoArgs');
         const customTaskSpy2 = sinon.spy(tasks, 'customTask');
         const runner = new Runner({
@@ -236,7 +235,7 @@ describe('Run Tasks', function() {
         }).then(done, done);
     })
 
-    it('should run a conditional ifThenElse task with condition = false', function(done) {
+    it('should run a conditional ifThenElse task with condition = false', (done) => {
         const customTaskSpy1 = sinon.spy(tasks, 'customTaskNoArgs');
         const customTaskSpy2 = sinon.spy(tasks, 'customTask');
         const runner = new Runner({
