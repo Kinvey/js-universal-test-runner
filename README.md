@@ -162,7 +162,7 @@ copyTestRunner(to)
 Runs a shell command
 
 ```js
-runShellCommand({ command, args, cwd })
+runCommand({ command, args, cwd })
 ```
 
 ### installPackage
@@ -170,7 +170,7 @@ runShellCommand({ command, args, cwd })
 Installs npm packages
 
 ```js
-installNpmPackages(packages)
+installPackages(packages)
 ```
 
 ### processTemplateFile
