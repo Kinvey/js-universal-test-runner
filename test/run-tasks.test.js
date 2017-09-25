@@ -63,12 +63,13 @@ it('npm run build-deps should generate the bundle files', (done) => {
                 () => {
                     assert(fs.existsSync(path.join(bundleDirectory, testRunnerBundleFileName)));
                     assert(fs.existsSync(path.join(bundleDirectory, testRunnerBundleMapFileName)));
+                    done();
                 }
             ]
         ]
     });
 
-    runner.run().then(() => {}).then(done, done);
+    runner.run().catch(done);
 }).timeout(10000);
 
 describe('Run Tasks', () => {
@@ -103,7 +104,8 @@ describe('Run Tasks', () => {
         runner.run().then(() => {
             assert(customTaskSpy.calledOnce);
             assert(customTaskSpy.withArgs(runner).calledOnce);
-        }).then(done, done);
+            done();
+        }).catch(done);
     })
 
     it('should run an array of tasks with the correct arguments', (done) => {
@@ -123,7 +125,8 @@ describe('Run Tasks', () => {
             assert(customTaskSpy2.withArgs('test', 10, runner).calledOnce);
             assert(customTaskSpy3.withArgs(tasks.customTaskNoArgs, runner).calledOnce);
             sinon.assert.callOrder(customTaskSpy1, customTaskSpy2, customTaskSpy3)
-        }).then(done, done);
+            done();
+        }).catch(done);
     })
 
     it('should run runCommand task', (done) => {
@@ -138,12 +141,13 @@ describe('Run Tasks', () => {
                     'verify task execution',
                     () => {
                         assert(fs.existsSync(path.join(testFilesDir, filename)));
+                        done();
                     }
                 ]
             ]
         });
 
-        runner.run().then(() => {}).then(done, done);
+        runner.run().catch(done);
     })
 
     it('should run copy and remove tasks', (done) => {
@@ -164,12 +168,13 @@ describe('Run Tasks', () => {
                     'verify remove task execution',
                     () => {
                         assert(!fs.existsSync(path.join(testFilesDir, fileToCopyName)));
+                        done();
                     }
                 ]
             ]
         });
 
-        runner.run().then(() => {}).then(done, done);
+        runner.run().catch(done);
     })
 
     it('should run copyTestRunner task', (done) => {
@@ -181,12 +186,13 @@ describe('Run Tasks', () => {
                     'verify copyTestRunner task execution',
                     () => {
                         assert(fs.existsSync(path.join(testFilesDir, testRunnerBundleFileName)));
+                        done();
                     }
                 ]
             ]
         });
 
-        runner.run().then(() => {}).then(done, done);
+        runner.run().catch(done);
     })
 
     it('should run processTemplateFile task', (done) => {
@@ -205,7 +211,8 @@ describe('Run Tasks', () => {
                         fs.readFile(resultFilePath, (err, data) => {
                             if (err) {
                                 done(err);
-                            } else {
+                            }
+                            else {
                                 assert(data.indexOf(value) >= 0);
                                 done();
                             }
@@ -215,7 +222,7 @@ describe('Run Tasks', () => {
             ]
         });
 
-        runner.run()
+        runner.run().catch(done);
     })
 
     it('should run a conditional when task if the condition is true', (done) => {
@@ -229,7 +236,8 @@ describe('Run Tasks', () => {
         runner.run().then(() => {
             assert(customTaskSpy.calledOnce);
             assert(customTaskSpy.withArgs(runner).calledOnce);
-        }).then(done, done);
+            done();
+        }).catch(done);
     })
 
     it('should not run a conditional when task if the condition is false', (done) => {
@@ -242,7 +250,8 @@ describe('Run Tasks', () => {
 
         runner.run().then(() => {
             assert(customTaskSpy.notCalled);
-        }).then(done, done);
+            done();
+        }).catch(done);
     })
 
     it('should run a conditional ifThenElse task with condition = true', (done) => {
@@ -260,7 +269,8 @@ describe('Run Tasks', () => {
         runner.run().then(() => {
             assert(customTaskSpy1.calledOnce);
             assert(customTaskSpy2.notCalled);
-        }).then(done, done);
+            done();
+        }).catch(done);
     })
 
     it('should run a conditional ifThenElse task with condition = false', (done) => {
@@ -278,6 +288,7 @@ describe('Run Tasks', () => {
         runner.run().then(() => {
             assert(customTaskSpy1.notCalled);
             assert(customTaskSpy2.calledOnce);
-        }).then(done, done);
+            done();
+        }).catch(done);
     })
 })
