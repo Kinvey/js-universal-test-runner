@@ -6,7 +6,9 @@ const fs = require('fs');
 
 const testFilesDir = path.join(__dirname, 'temp');
 const fileToCopyName = 'test_file';
-const testRunnerBundleFileName = 'testRunner.bundle.js'
+const bundleDirectory = path.resolve(__dirname, '..', 'injectables', 'bundles');
+const testRunnerBundleFileName = 'testRunner.bundle.js';
+const testRunnerBundleMapFileName = 'testRunner.bundle.js.map';
 
 const {
     Runner,
@@ -48,6 +50,8 @@ removeDirectory = (dirPath, removeSelf) => {
 };
 
 describe('Run Tasks', function() {
+
+    this.timeout(10000);
 
     before((done) => {
         removeDirectory(testFilesDir)
@@ -226,5 +230,28 @@ describe('Run Tasks', function() {
             assert(customTaskSpy1.notCalled);
             assert(customTaskSpy2.calledOnce);
         }).then(done, done);
+    })
+
+    it('npm run build-deps should generate the bundle files', function(done) {
+
+        removeDirectory(bundleDirectory);
+        assert(!fs.existsSync(path.join(bundleDirectory, testRunnerBundleFileName)));
+        const runner = new Runner({
+            pipeline: [
+                runCommand({
+                    command: 'npm',
+                    args: ['run', 'build-deps'],
+                    cwd: testFilesDir
+                }), [
+                    'verify the bundle files are generated',
+                    () => {
+                        assert(fs.existsSync(path.join(bundleDirectory, testRunnerBundleFileName)));
+                        assert(fs.existsSync(path.join(bundleDirectory, testRunnerBundleMapFileName)));
+                    }
+                ]
+            ]
+        });
+
+        runner.run().then(() => {}).then(done, done);
     })
 })
