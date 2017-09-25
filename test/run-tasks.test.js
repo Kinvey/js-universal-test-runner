@@ -50,7 +50,6 @@ removeDirectory = (dirPath, removeSelf) => {
 };
 
 it('npm run build-deps should generate the bundle files', function (done) {
-    this.timeout(10000);
 
     removeDirectory(bundleDirectory);
     assert(!fs.existsSync(path.join(bundleDirectory, testRunnerBundleFileName)));
@@ -70,7 +69,7 @@ it('npm run build-deps should generate the bundle files', function (done) {
     });
 
     runner.run().then(() => {}).then(done, done);
-})
+}).timeout(10000);
 
 describe('Run Tasks', () => {
 
