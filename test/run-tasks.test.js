@@ -32,8 +32,7 @@ const {
 const tasks = {
     customTaskNoArgs: () => {},
     customTaskOneArg: (arg) => {},
-    customTaskTwoArgs: (arg1, arg2) => {},
-    customTask: (arg) => {}
+    customTaskTwoArgs: (arg1, arg2) => {}
 };
 
 const removeFiles = (dirPath, removeSelf) => {
@@ -113,19 +112,19 @@ describe('Run Tasks', () => {
     it('should run an array of tasks with the correct arguments', (done) => {
         const customTaskSpy1 = sinon.spy(tasks, 'customTaskOneArg');
         const customTaskSpy2 = sinon.spy(tasks, 'customTaskTwoArgs');
-        const customTaskSpy3 = sinon.spy(tasks, 'customTask');
+        const customTaskSpy3 = sinon.spy(tasks, 'customTaskNoArgs');
         const runner = new Runner({
             pipeline: [
                 ['customTaskOneArg', tasks.customTaskOneArg, 5],
                 ['customTaskTwoArgs', tasks.customTaskTwoArgs, 'test', 10],
-                ['customTask', tasks.customTask, tasks.customTaskNoArgs]
+                ['customTaskNoArgs', tasks.customTaskNoArgs, tasks.customTaskTwoArgs]
             ]
         });
 
         runner.run().then(() => {
             assert(customTaskSpy1.withArgs(5, runner).calledOnce);
             assert(customTaskSpy2.withArgs('test', 10, runner).calledOnce);
-            assert(customTaskSpy3.withArgs(tasks.customTaskNoArgs, runner).calledOnce);
+            assert(customTaskSpy3.withArgs(tasks.customTaskTwoArgs, runner).calledOnce);
             sinon.assert.callOrder(customTaskSpy1, customTaskSpy2, customTaskSpy3)
             done();
         }).catch(done);
@@ -277,12 +276,12 @@ describe('Run Tasks', () => {
 
     it('should run a conditional ifThenElse task with condition = true', (done) => {
         const customTaskSpy1 = sinon.spy(tasks, 'customTaskNoArgs');
-        const customTaskSpy2 = sinon.spy(tasks, 'customTask');
+        const customTaskSpy2 = sinon.spy(tasks, 'customTaskOneArg');
         const runner = new Runner({
             pipeline: [
                 ifThenElse(() => true,
                     tasks.customTaskNoArgs,
-                    tasks.customTask
+                    tasks.customTaskOneArg
                 )
             ]
         });
@@ -296,12 +295,12 @@ describe('Run Tasks', () => {
 
     it('should run a conditional ifThenElse task with condition = false', (done) => {
         const customTaskSpy1 = sinon.spy(tasks, 'customTaskNoArgs');
-        const customTaskSpy2 = sinon.spy(tasks, 'customTask');
+        const customTaskSpy2 = sinon.spy(tasks, 'customTaskOneArg');
         const runner = new Runner({
             pipeline: [
                 ifThenElse(() => false,
                     tasks.customTaskNoArgs,
-                    tasks.customTask
+                    tasks.customTaskOneArg
                 )
             ]
         });
