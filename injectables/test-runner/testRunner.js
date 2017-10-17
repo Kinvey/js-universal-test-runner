@@ -47,6 +47,7 @@ TestRunner.prototype.initializeGlobals = function(root) {
     root.chai = require('../test-libs/chai');
     root.mocha = require('../test-libs/mocha');
     root.async = require('../test-libs/async');
+    root._ = require('../test-libs/lodash');
     root.ok = chai.assert.ok;
     root.assert = chai.assert;
     root.equal = chai.assert.strictEqual;
