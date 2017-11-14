@@ -6,7 +6,6 @@
     "license": "Apache-2.0",
     "author": "Kinvey, Inc.",
     "scripts": {
-        "postinstall": "npm run build-deps",
         "test": "mocha",
         "build-deps": "parallel-webpack --config=injectables/webpack.config.js"
     },
