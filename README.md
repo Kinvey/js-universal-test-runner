@@ -1,5 +1,9 @@
 # Universal Javascript Test Runner
 
+## Installation
+
+`$ npm install universal-runner`
+
 ## Description
 
 The goal of the runner is to provide an easy way to automate the testing in different javascript environments. Currently supported are:
@@ -38,7 +42,7 @@ const {
     conditionals: {
         when
     }
-} = require('universal-js-runner');
+} = require('universal-runner');
 
 const customTask = ['customTask', () => console.log('custom')];
 
@@ -110,7 +114,7 @@ const {
         when,
         ifThenElse
     }
-} = require('universal-js-runner');
+} = require('universal-runner');
 ```
 
 ### logServer
@@ -158,7 +162,7 @@ copyTestRunner(to)
 Runs a shell command
 
 ```js
-runShellCommand({ command, args, cwd })
+runCommand({ command, args, cwd })
 ```
 
 ### installPackage
@@ -166,7 +170,7 @@ runShellCommand({ command, args, cwd })
 Installs npm packages
 
 ```js
-installNpmPackages(packages)
+installPackages(packages)
 ```
 
 ### processTemplateFile
@@ -206,7 +210,7 @@ ifThenElse(() => new Promise(resolve => {
     }),
     () => console.log('5 seconds passed'), 
     () => console.log('5 seconds didn\'t pass for some reason')
-});
+);
 ```
 
 ## Contributing
