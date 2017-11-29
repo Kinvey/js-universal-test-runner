@@ -2,7 +2,7 @@
 
 ## Installation
 
-`$ npm install universal-runner`
+`$ npm install kinvey-universal-runner`
 
 ## Description
 
@@ -42,7 +42,7 @@ const {
     conditionals: {
         when
     }
-} = require('universal-runner');
+} = require('kinvey-universal-runner');
 
 const customTask = ['customTask', () => console.log('custom')];
 
@@ -114,7 +114,7 @@ const {
         when,
         ifThenElse
     }
-} = require('universal-runner');
+} = require('kinvey-universal-runner');
 ```
 
 ### logServer
