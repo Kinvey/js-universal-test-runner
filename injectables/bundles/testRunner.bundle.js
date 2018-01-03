@@ -649,7 +649,7 @@ const MobileTapReporter = function(logServerPort) {
             }
         }
 
-        const logServer = 'http://127.0.0.1:' + logServerPort;
+        const logServer = `http://127.0.0.1:${logServerPort}`;
         function mochaLog(message) {
             console.log('Mocha: ' + message);
 
