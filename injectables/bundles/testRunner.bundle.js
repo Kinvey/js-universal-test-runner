@@ -649,7 +649,7 @@ const MobileTapReporter = function(logServerPort) {
             }
         }
 
-        const logServer = 'http://localhost:' + logServerPort;
+        const logServer = `http://127.0.0.1:${logServerPort}`;
         function mochaLog(message) {
             console.log('Mocha: ' + message);
 
@@ -728,7 +728,10 @@ const MobileTapReporter = function(logServerPort) {
             if (err.stack) {
                 failMessage += ' - ' + err.stack.replace(/^/gm, '  ');
             }
-
+            else if (err.message) {
+                failMessage += ' - ' + err.message.replace(/^/gm, '  ');
+            }
+            ++n;
             mochaLog(failMessage);
         });
 
