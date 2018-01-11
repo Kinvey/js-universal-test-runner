@@ -456,15 +456,15 @@ module.exports = function(module) {
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {const {
-    isReactNative,
-    isNodejs,
-    isNativeScript,
-    isCordova,
-    isDesktop
-} = __webpack_require__(2);
+/* WEBPACK VAR INJECTION */(function(global) {var platform = __webpack_require__(2);
 
-const MobileTapReporter = __webpack_require__(8);
+var isReactNative = platform.isReactNative;
+var isNodejs = platform.isNodejs;
+var isNativeScript = platform.isNativeScript;
+var isCordova = platform.isCordova;
+var isDesktop = platform.isDesktop;
+
+var MobileTapReporter = __webpack_require__(8);
 
 function TestRunner() {
     this.runQueue = [];
@@ -584,7 +584,7 @@ TestRunner.prototype.runMocha = function() {
     mocha.run();
 };
 
-const runner = new TestRunner();
+var runner = new TestRunner();
 
 if (isCordova) {
     document.addEventListener('deviceready', function() {
@@ -624,15 +624,15 @@ module.exports = __webpack_amd_options__;
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const {
-    isReactNative,
-    isNodejs,
-    isNativeScript,
-    isCordova,
-    isDesktop
-} = __webpack_require__(2);
+var platform = __webpack_require__(2);
 
-const MobileTapReporter = function(logServerPort) {
+var isReactNative = platform.isReactNative;
+var isNodejs = platform.isNodejs;
+var isNativeScript = platform.isNativeScript;
+var isCordova = platform.isCordova;
+var isDesktop = platform.isDesktop;
+
+var MobileTapReporter = function(logServerPort) {
     //the built in TAP reporter of mocha uses placeholders which do not render in logcat
     //console.log('ok %d %s # SKIP -', n, title(test));
 
@@ -649,11 +649,11 @@ const MobileTapReporter = function(logServerPort) {
             }
         }
 
-        const logServer = `http://127.0.0.1:${logServerPort}`;
+        var logServer = `http://127.0.0.1:${logServerPort}`;
         function mochaLog(message) {
             console.log('Mocha: ' + message);
 
-            let platform = '';
+            var platform = '';
             if (isNativeScript) {
                 platform = 'nativescript';
             } else if (isNodejs) {
@@ -675,8 +675,8 @@ const MobileTapReporter = function(logServerPort) {
                     })
                 }).catch(handleSendLogError);
             } else if (isNodejs) {
-                const requestModule = 'request';
-                const request = !(function webpackMissingModule() { var e = new Error("Cannot find module \".\""); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+                var requestModule = 'request';
+                var request = !(function webpackMissingModule() { var e = new Error("Cannot find module \".\""); e.code = 'MODULE_NOT_FOUND'; throw e; }());
                 request(
                     {
                         method: 'POST',
