@@ -1,12 +1,12 @@
-const {
-    isReactNative,
-    isNodejs,
-    isNativeScript,
-    isCordova,
-    isDesktop
-} = require('../platform');
+var platform = require('../platform');
 
-const MobileTapReporter = require('./mobileTapReporter');
+var isReactNative = platform.isReactNative;
+var isNodejs = platform.isNodejs;
+var isNativeScript = platform.isNativeScript;
+var isCordova = platform.isCordova;
+var isDesktop = platform.isDesktop;
+
+var MobileTapReporter = require('./mobileTapReporter');
 
 function TestRunner() {
     this.runQueue = [];
@@ -126,7 +126,7 @@ TestRunner.prototype.runMocha = function() {
     mocha.run();
 };
 
-const runner = new TestRunner();
+var runner = new TestRunner();
 
 if (isCordova) {
     document.addEventListener('deviceready', function() {

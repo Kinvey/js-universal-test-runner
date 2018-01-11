@@ -1,12 +1,12 @@
-const {
-    isReactNative,
-    isNodejs,
-    isNativeScript,
-    isCordova,
-    isDesktop
-} = require('../platform');
+var platform = require('../platform');
 
-const MobileTapReporter = function(logServerPort) {
+var isReactNative = platform.isReactNative;
+var isNodejs = platform.isNodejs;
+var isNativeScript = platform.isNativeScript;
+var isCordova = platform.isCordova;
+var isDesktop = platform.isDesktop;
+
+var MobileTapReporter = function(logServerPort) {
     //the built in TAP reporter of mocha uses placeholders which do not render in logcat
     //console.log('ok %d %s # SKIP -', n, title(test));
 
@@ -23,11 +23,11 @@ const MobileTapReporter = function(logServerPort) {
             }
         }
 
-        const logServer = `http://127.0.0.1:${logServerPort}`;
+        var logServer = `http://127.0.0.1:${logServerPort}`;
         function mochaLog(message) {
             console.log('Mocha: ' + message);
 
-            let platform = '';
+            var platform = '';
             if (isNativeScript) {
                 platform = 'nativescript';
             } else if (isNodejs) {
@@ -49,8 +49,8 @@ const MobileTapReporter = function(logServerPort) {
                     })
                 }).catch(handleSendLogError);
             } else if (isNodejs) {
-                const requestModule = 'request';
-                const request = require(requestModule);
+                var requestModule = 'request';
+                var request = require(requestModule);
                 request(
                     {
                         method: 'POST',
