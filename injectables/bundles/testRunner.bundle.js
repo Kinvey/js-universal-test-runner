@@ -220,17 +220,17 @@ var isInAppBuilderSimulator = function() {
 };
 
 module.exports = {
-    isCordova,
-    isNativeScript,
-    isDesktop,
-    isWindowsPhone,
-    isAndroid,
-    isIOS,
-    isNodejs,
-    isRequirejs,
-    isReactNative,
-    platform,
-    isInAppBuilderSimulator
+    isCordova: isCordova,
+    isNativeScript: isNativeScript,
+    isDesktop: isDesktop,
+    isWindowsPhone: isWindowsPhone,
+    isAndroid: isAndroid,
+    isIOS: isIOS,
+    isNodejs: isNodejs,
+    isRequirejs: isRequirejs,
+    isReactNative: isReactNative,
+    platform: platform,
+    isInAppBuilderSimulator: isInAppBuilderSimulator
 };
 
 
@@ -645,11 +645,11 @@ var MobileTapReporter = function(logServerPort) {
 
         function handleSendLogError(err) {
             if (err) {
-                console.error(`Failed sending log to server: ${err.message}`);
+                console.error('Failed sending log to server: ' + err.message);
             }
         }
 
-        var logServer = `http://127.0.0.1:${logServerPort}`;
+        var logServer = 'http://127.0.0.1:' + logServerPort;
         function mochaLog(message) {
             console.log('Mocha: ' + message);
 

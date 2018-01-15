@@ -19,11 +19,11 @@ var MobileTapReporter = function(logServerPort) {
 
         function handleSendLogError(err) {
             if (err) {
-                console.error(`Failed sending log to server: ${err.message}`);
+                console.error('Failed sending log to server: ' + err.message);
             }
         }
 
-        var logServer = `http://127.0.0.1:${logServerPort}`;
+        var logServer = 'http://127.0.0.1:' + logServerPort;
         function mochaLog(message) {
             console.log('Mocha: ' + message);
 
