@@ -683,7 +683,7 @@ var MobileTapReporter = function(logServerPort) {
                         url: logServer,
                         json: true,
                         body: {
-                            platform,
+                            platform: platform,
                             logs: [message]
                         }
                     },
