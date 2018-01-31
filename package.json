@@ -1,6 +1,6 @@
 {
     "name": "kinvey-universal-runner",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "description": "A tool for automation of the testing in different JavaScript environments",
     "main": "index.js",
     "license": "Apache-2.0",
