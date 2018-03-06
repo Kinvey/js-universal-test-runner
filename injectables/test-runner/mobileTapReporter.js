@@ -5,6 +5,7 @@ var isNodejs = platform.isNodejs;
 var isNativeScript = platform.isNativeScript;
 var isCordova = platform.isCordova;
 var isDesktop = platform.isDesktop;
+var os = require('os');
 
 var MobileTapReporter = function(logServerPort) {
     //the built in TAP reporter of mocha uses placeholders which do not render in logcat
@@ -99,12 +100,11 @@ var MobileTapReporter = function(logServerPort) {
         runner.on('fail', function(test, err) {
             failures++;
             var failMessage = 'not ok ' + n + ' ' + title(test);
+            failMessage += os.EOL + err.message;
             if (err.stack) {
-                failMessage += ' - ' + err.stack.replace(/^/gm, '  ');
+                failMessage += os.EOL + err.stack.replace(/^/gm, '  ');
             }
-            else if (err.message) {
-                failMessage += ' - ' + err.message.replace(/^/gm, '  ');
-            }
+         
             ++n;
             mochaLog(failMessage);
         });
